@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { useSelector } from 'react-redux';
 import { RootState } from '@/app/store';
 
 const initialState: PostsState = [
@@ -18,10 +17,18 @@ const initialState: PostsState = [
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    postAdded(state, action) {
+      // This can be used inside createSlice() because Immer js handles the state without mutating it.
+      state.push(action.payload);
+    },
+  },
 });
 
 // I'll export this selector as a way to keep the code organized, if my state changes in the future I'll just change this selector
 export const selectAllPosts = (state: RootState) => state.posts;
+
+// It's important to remember that the createSlice function automatically creates an actions object.
+export const { postAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;
