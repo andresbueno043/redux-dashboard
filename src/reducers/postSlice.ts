@@ -1,4 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/app/store';
 
 const initialState: PostsState = [
   {
@@ -18,5 +20,8 @@ const postsSlice = createSlice({
   initialState,
   reducers: {},
 });
+
+// I'll export this selector as a way to keep the code organized, if my state changes in the future I'll just change this selector
+export const selectAllPosts = (state: RootState) => state.posts;
 
 export default postsSlice.reducer;
