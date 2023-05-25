@@ -1,7 +1,9 @@
+import PostsList from '@/components/PostsList';
+
 function App() {
   return (
     <div>
-      <h1>Hola</h1>
+      <PostsList />
     </div>
   );
 }
