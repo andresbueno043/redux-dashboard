@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
 import { RootState } from '@/app/store';
 
 const initialState: PostsState = [
@@ -18,9 +18,19 @@ const postsSlice = createSlice({
   name: 'posts',
   initialState,
   reducers: {
-    postAdded(state, action) {
-      // This can be used inside createSlice() because Immer js handles the state without mutating it.
-      state.push(action.payload);
+    postAdded: {
+      reducer: (state, action: PayloadAction<Post>) => {
+        state.push(action.payload);
+      },
+      prepare: (title: string, content: string): { payload: Post } => {
+        return {
+          payload: {
+            id: nanoid(),
+            title,
+            content,
+          },
+        };
+      },
     },
   },
 });
