@@ -1,13 +1,15 @@
 import { useSelector } from 'react-redux';
-
-import { RootState } from '@/app/store';
 import Post from '@/components/Post';
 import { selectAllPosts } from '@/reducers/postSlice';
 
 function PostsList() {
   const posts = useSelector(selectAllPosts);
 
-  const renderedPosts = posts.map((post: Post) => (
+  const orderedPosts = posts
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  const renderedPosts = orderedPosts.map((post: Post) => (
     <Post key={post.id} post={post} />
   ));
 

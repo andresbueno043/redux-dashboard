@@ -31,8 +31,7 @@ const postsSlice = createSlice({
       prepare: (
         title: string,
         content: string,
-        userId: string,
-        date: string
+        userId: string
       ): { payload: Post } => {
         return {
           payload: {
@@ -40,7 +39,7 @@ const postsSlice = createSlice({
             title,
             content,
             userId,
-            date,
+            date: new Date().toISOString(),
           },
         };
       },
