@@ -1,4 +1,5 @@
 import { useSelector } from 'react-redux';
+
 import { RootState } from '@/app/store';
 import Post from '@/components/Post';
 import { selectAllPosts } from '@/reducers/postSlice';
@@ -7,7 +8,7 @@ function PostsList() {
   const posts = useSelector(selectAllPosts);
 
   const renderedPosts = posts.map((post: Post) => (
-    <Post key={post.id} title={post.title} content={post.content} />
+    <Post key={post.id} post={post} />
   ));
 
   return (

@@ -1,13 +1,15 @@
+import PostAuthor from '@/components/PostAuthor';
+
 type Props = {
-  title: string;
-  content: string;
+  post: Post;
 };
 
-function Post({ title, content }: Props) {
+function Post({ post }: Props) {
   return (
-    <article className="bg-white my-4 mx-10 rounded-lg px-5 min-h-[120px] pt-4">
-      <h3 className="text-xl font-bold">{title}</h3>
-      <p className="mt-2">{content.substring(0, 100)}</p>
+    <article className="bg-white my-4 mx-10 rounded-lg px-5 min-h-[120px] py-4">
+      <h3 className="text-xl font-bold">{post.title}</h3>
+      <p className="mt-2">{post.content.substring(0, 100)}</p>
+      <PostAuthor userId={post.userId} />
     </article>
   );
 }
