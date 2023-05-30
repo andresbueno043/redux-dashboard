@@ -10,6 +10,13 @@ const initialState: PostsState = [
     content: "I've heard good things",
     userId: '1',
     date: sub(new Date(), { minutes: 10 }).toISOString(),
+    reactions: {
+      thumbsUp: 0,
+      wow: 0,
+      heart: 0,
+      rocket: 0,
+      coffee: 0,
+    },
   },
   {
     id: '2',
@@ -17,6 +24,13 @@ const initialState: PostsState = [
     content: 'The more I say slice, the more I want pizza',
     userId: '2',
     date: sub(new Date(), { minutes: 5 }).toISOString(),
+    reactions: {
+      thumbsUp: 0,
+      wow: 0,
+      heart: 0,
+      rocket: 0,
+      coffee: 0,
+    },
   },
 ];
 
@@ -40,9 +54,24 @@ const postsSlice = createSlice({
             content,
             userId,
             date: new Date().toISOString(),
+            reactions: {
+              thumbsUp: 0,
+              wow: 0,
+              heart: 0,
+              rocket: 0,
+              coffee: 0,
+            },
           },
         };
       },
+    },
+    reactionAdded(state, action) {
+      const { postId, reaction } = action.payload;
+      const existingPost = state.find((post) => post.id === postId);
+      if (existingPost) {
+        // eslint-disable-next-line no-plusplus
+        existingPost.reactions[reaction]++;
+      }
     },
   },
 });
@@ -51,6 +80,6 @@ const postsSlice = createSlice({
 export const selectAllPosts = (state: RootState) => state.posts;
 
 // It's important to remember that the createSlice function automatically creates an actions object.
-export const { postAdded } = postsSlice.actions;
+export const { postAdded, reactionAdded } = postsSlice.actions;
 
 export default postsSlice.reducer;

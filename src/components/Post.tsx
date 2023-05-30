@@ -1,5 +1,6 @@
 import PostAuthor from '@/components/PostAuthor';
 import TimeAgo from '@/components/TimeAgo';
+import ReactionButtons from './ReactionButtons';
 
 type Props = {
   post: Post;
@@ -12,6 +13,7 @@ function Post({ post }: Props) {
       <p className="mt-2">{post.content.substring(0, 100)}</p>
       <PostAuthor userId={post.userId} />
       <TimeAgo timestamp={post.date} />
+      <ReactionButtons post={post} />
     </article>
   );
 }
