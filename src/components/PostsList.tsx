@@ -11,7 +11,7 @@ function PostsList() {
   ));
 
   return (
-    <div className="bg-gray-400 mt-6 w-[30%] rounded-lg shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]">
+    <div className="bg-gray-400 mb-10 mt-6 w-[30%] rounded-lg shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]">
       {renderedPosts}
     </div>
   );

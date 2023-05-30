@@ -1,13 +1,30 @@
 import { ChangeEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { nanoid } from '@reduxjs/toolkit';
+
+import { postAdded } from '@/reducers/postSlice';
 
 function AddPostForm() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const dispatch = useDispatch();
 
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
   const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) =>
     setContent(e.target.value);
+
+  const onSavePostClicked = () => {
+    if (title && content) {
+      dispatch(
+        postAdded({
+          id: nanoid(),
+          title,
+          content,
+        })
+      );
+    }
+  };
 
   return (
     <section className="bg-gray-200 w-[40%] rounded-lg shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)] flex flex-col items-center justify-center mx-4">
@@ -37,6 +54,7 @@ function AddPostForm() {
         <button
           className="bg-gray-800 text-white px-10 py-2 my-5 rounded-md hover:bg-slate-600 transition-all duration-300"
           type="button"
+          onClick={onSavePostClicked}
         >
           Save Post
         </button>
