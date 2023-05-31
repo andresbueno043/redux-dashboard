@@ -1,14 +1,29 @@
-import { PayloadAction, createSlice, nanoid } from '@reduxjs/toolkit';
+/* eslint-disable no-plusplus */
+/* eslint-disable no-param-reassign */
+import {
+  PayloadAction,
+  createSlice,
+  nanoid,
+  createAsyncThunk,
+} from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
+import axios from 'axios';
 
 import { RootState } from '@/app/store';
 import Status from '@/types';
+
+const POSTS_URL = 'https://jsonplaceholder.typicode.com/posts';
 
 const initialState: PostsState = {
   posts: [],
   status: Status.idle,
   error: null,
 };
+
+export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
+  const response = await axios.get<Post[]>(POSTS_URL);
+  return [...response.data];
+});
 
 const postsSlice = createSlice({
   name: 'posts',
@@ -50,10 +65,37 @@ const postsSlice = createSlice({
       }
     },
   },
+  extraReducers(builder) {
+    builder
+      .addCase(fetchPosts.pending, (state, action) => {
+        state.status = Status.loading;
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.status = Status.succeeded;
+        let min = 1;
+        const loadedPosts = action.payload.map((post) => {
+          post.date = sub(new Date(), { minutes: min++ }).toISOString();
+          post.reactions = {
+            thumbsUp: 0,
+            hooray: 0,
+            heart: 0,
+            rocket: 0,
+            eyes: 0,
+          };
+          return post;
+        });
+
+        state.posts = state.posts.concat(loadedPosts);
+      })
+      .addCase(fetchPosts.rejected, (state, action) => {
+        state.status = Status.failed;
+        state.error = action.error.message;
+      });
+  },
 });
 
 // I'll export this selector as a way to keep the code organized, if my state changes in the future I'll just change this selector
-export const selectAllPosts = (state: RootState) => state.posts;
+export const selectAllPosts = (state: RootState) => state.posts.posts;
 
 // It's important to remember that the createSlice function automatically creates an actions object.
 export const { postAdded, reactionAdded } = postsSlice.actions;

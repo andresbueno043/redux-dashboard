@@ -10,5 +10,5 @@ interface Post {
 type PostsState = {
   posts: Post[];
   status: Status;
-  error: null;
+  error?;
 };
