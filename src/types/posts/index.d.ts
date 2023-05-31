@@ -7,4 +7,8 @@ interface Post {
   reactions: { [key: string]: number };
 }
 
-type PostsState = Post[];
+type PostsState = {
+  posts: Post[];
+  status: Status;
+  error: null;
+};
