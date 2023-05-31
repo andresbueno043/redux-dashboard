@@ -1,9 +1,26 @@
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { useEffect } from 'react';
+
 import Post from '@/components/Post';
-import { selectAllPosts } from '@/reducers/postSlice';
+import postSlice, {
+  selectAllPosts,
+  getPostStatus,
+  getPostError,
+  fetchPosts,
+} from '@/reducers/postSlice';
+import { AppDispatch } from '@/app/store';
 
 function PostsList() {
+  const dispatch: AppDispatch = useDispatch();
   const posts = useSelector(selectAllPosts);
+  const postsStatus = useSelector(getPostStatus);
+  const postsError = useSelector(getPostError);
+
+  useEffect(() => {
+    if (postsStatus === 'idle') {
+      dispatch(fetchPosts());
+    }
+  });
 
   const orderedPosts = posts
     .slice()

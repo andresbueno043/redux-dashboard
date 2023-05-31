@@ -21,8 +21,8 @@ const initialState: PostsState = {
 };
 
 export const fetchPosts = createAsyncThunk('posts/fetchPosts', async () => {
-  const response = await axios.get<Post[]>(POSTS_URL);
-  return [...response.data];
+  const response = await axios.get(POSTS_URL);
+  return [...response.data] as Post[];
 });
 
 const postsSlice = createSlice({
@@ -96,6 +96,8 @@ const postsSlice = createSlice({
 
 // I'll export this selector as a way to keep the code organized, if my state changes in the future I'll just change this selector
 export const selectAllPosts = (state: RootState) => state.posts.posts;
+export const getPostStatus = (state: RootState) => state.posts.status;
+export const getPostError = (state: RootState) => state.posts.error;
 
 // It's important to remember that the createSlice function automatically creates an actions object.
 export const { postAdded, reactionAdded } = postsSlice.actions;
